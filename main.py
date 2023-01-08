@@ -1,7 +1,7 @@
 import numpy as np
 import schedule
 import telebot
-
+from telebot import types
 
 from functions import *
 
