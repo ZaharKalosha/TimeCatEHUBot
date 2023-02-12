@@ -2,18 +2,18 @@ from subprocess import run
 from time import sleep
 
 # Path and name to the script you are trying to start
-file_path = "main.py"
-
+file_path = "./main.py"
 restart_timer = 2
 
 
 def start_script():
     try:
         # Make sure 'python' command is available
-        run("python3 " + file_path, check=True)
-    except:
+        run(f'python3 {file_path}', shell=True, check=True)
+    except Exception as e:
         # Script crashed, lets restart it!
         print('crash')
+        print(e)
         handle_crash()
 
 

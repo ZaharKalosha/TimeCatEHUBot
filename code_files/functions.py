@@ -2,23 +2,22 @@ from datetime import datetime, timedelta, timezone
 import math
 import requests
 import re
-
-
-flag = 0
-
-
-def get_flag():
-    return flag
-
-
-def set_flag(n):
-    global flag
-    flag = n
+import datetime
 
 
 def get_time():
     delta = timedelta(hours=3, minutes=0)
     return datetime.now(timezone.utc) + delta
+
+
+def get_number_of_week():
+    week_number = int(datetime.datetime.today().isocalendar()[1])
+    return week_number + 11  # TODO Пока костыль
+
+
+def get_number_of_day():
+    day_number = int(datetime.datetime.today().isocalendar()[2])
+    return day_number
 
 
 def my_round(i):
@@ -29,7 +28,7 @@ def normalize(s) -> str:
     return str(s).replace('  ', '').replace('\n', '')
 
 
-def auth_moodle(login, password) :
+def auth_moodle(login, password):
     url_domain = "https://moodle.ehu.lt"
     s = requests.Session()
     r_1 = s.get(url=url_domain + "/login/index.php")
@@ -41,7 +40,6 @@ def auth_moodle(login, password) :
     result = ''
     for i in r_2.text.splitlines():
         if "<title>" in i:
-            # print(i[15:-8:])
             result = i[15:-8:]
             break
     counter = 0
@@ -50,7 +48,11 @@ def auth_moodle(login, password) :
             counter += 1
             print(i)
             result = i
-    # return s
-    return result
+    if result == 'Moodle':
+        return True
+    elif result == 'Moodle: Log in to the site':
+        return False
+    return False
 
-
+# if __name__ == '__main__':
+#     return
